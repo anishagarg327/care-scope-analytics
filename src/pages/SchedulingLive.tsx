@@ -113,8 +113,8 @@ export default function SchedulingLive() {
             </div>
           </div>
           
-          <div className="flex-1 p-6">
-            <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden border">
+          <div className="flex-1 p-6 overflow-x-auto">
+            <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden border min-w-[700px]">
               {days.map(day => (
                 <div key={day} className="bg-muted py-2 text-center text-sm font-medium text-muted-foreground">
                   {day}

@@ -10,7 +10,12 @@ const navigation = [
   { name: 'Reports', href: '/reports', icon: FileText },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  isMobileMenuOpen?: boolean;
+  setIsMobileMenuOpen?: (open: boolean) => void;
+}
+
+export default function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: SidebarProps) {
   const location = useLocation();
   const [showSettings, setShowSettings] = useState(false);
   const [emailNotifs, setEmailNotifs] = useState(true);
@@ -18,10 +23,31 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="flex h-full w-64 flex-col border-r bg-card text-card-foreground shadow-sm">
-        <div className="flex h-16 items-center px-6 border-b">
-          <Activity className="h-8 w-8 text-primary mr-3" />
-          <span className="text-xl font-bold tracking-tight">CareScope</span>
+      {/* Mobile Backdrop */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+          onClick={() => setIsMobileMenuOpen?.(false)}
+        />
+      )}
+
+      {/* Sidebar Container */}
+      <div className={`
+        fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r bg-card text-card-foreground shadow-sm transition-transform duration-300 ease-in-out
+        md:relative md:translate-x-0
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
+        <div className="flex h-16 items-center px-6 border-b justify-between">
+          <div className="flex items-center">
+            <Activity className="h-8 w-8 text-primary mr-3" />
+            <span className="text-xl font-bold tracking-tight">CareScope</span>
+          </div>
+          <button 
+            className="md:hidden p-2 -mr-2 rounded-md text-muted-foreground hover:bg-muted"
+            onClick={() => setIsMobileMenuOpen?.(false)}
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
         <nav className="flex-1 space-y-1 px-3 py-4">
           {navigation.map((item) => {
@@ -30,6 +56,8 @@ export default function Sidebar() {
               <Link
                 key={item.name}
                 to={item.href}
+                onClick={() => setIsMobileMenuOpen?.(false)}
+
                 className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-md transition-colors ${
                   isActive
                     ? 'bg-primary text-primary-foreground'

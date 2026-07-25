@@ -1,9 +1,13 @@
-import { Bell, Search, User, Moon, Sun } from 'lucide-react';
+import { Bell, Search, User, Moon, Sun, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { mockPatientsList } from '../../data/mockData';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function Header() {
+interface HeaderProps {
+  setIsMobileMenuOpen?: (open: boolean) => void;
+}
+
+export default function Header({ setIsMobileMenuOpen }: HeaderProps) {
   const [isDark, setIsDark] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -49,6 +53,12 @@ export default function Header() {
   return (
     <header className="flex h-16 items-center justify-between border-b bg-card px-6 shadow-sm relative z-50">
       <div className="flex flex-1 items-center">
+        <button
+          onClick={() => setIsMobileMenuOpen?.(true)}
+          className="md:hidden mr-3 p-2 -ml-2 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
         <div className="relative w-full max-w-md">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <Search className="h-4 w-4 text-muted-foreground" />
